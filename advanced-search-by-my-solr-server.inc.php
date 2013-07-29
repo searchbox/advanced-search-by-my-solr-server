@@ -34,7 +34,7 @@ else {
 	$url_extraparam = "";
 }
 $url_mysolrserver .= '/mysolrserver_ws/manager.php';
-$this_plugin_dir_url = plugin_dir_url("") . 'advanced-search-by-my-solr-server/';
+$this_plugin_dir_url = plugin_dir_url("") . 'searchbox-server-search/';
 
 
 function mss_startswith($str, $sub) {
@@ -224,7 +224,11 @@ function mss_build_document( $options, $post_info ) {
 		$doc->setField( 'date', mss_format_date($post_info->post_date_gmt) );
 		$doc->setField( 'modified', mss_format_date($post_info->post_modified_gmt) );
 		$doc->setField( 'displaydate', $post_info->post_date );
-		$doc->setField( 'displaymodified', $post_info->post_modified );
+		$doc->setField( 'displaymodified', $post_info->post_modified );   
+    
+    $domain = get_option('siteurl'); //or home
+    $domain = str_replace('http://', '', $domain);
+    $doc->setField( 'domain', $domain ); 
 
 		$categories = get_the_category($post_info->ID);
 		if ( ! $categories == NULL ) {
@@ -378,10 +382,12 @@ function mss_query( $qry, $offset, $count, $fq, $sortby, $options) {
 		$params['facet.mincount'] = '1';
 		$params['fq'] = $fq;
 		$params['fl'] = '*,score';
-		$params['hl'] = 'on';
-		$params['hl.fl'] = 'content';
+		$params['hl'] = 'true';
+    $params['hl.simple.pre'] = '<span class="hl">';
+    $params['hl.simple.post'] = '</span>';
+		$params['hl.fl'] = array('title', 'content');
 		$params['hl.snippets'] = '3';
-		$params['hl.fragsize'] = '50';
+		$params['hl.fragsize'] = '150';
 		$params['sort'] = $sortby;
 		$params['spellcheck.onlyMorePopular'] = 'true';
 		$params['spellcheck.extendedResults'] = 'false';
@@ -406,8 +412,8 @@ function mss_query( $qry, $offset, $count, $fq, $sortby, $options) {
 
 function mss_autocomplete($q, $limit) {
 	$options = mss_get_option();
-
 	$solr = new Mss_Solr();
+  
 	if ($solr->connect($options, true)) {
 		$params = array();
 		$params['terms'] = 'true';
@@ -416,17 +422,28 @@ function mss_autocomplete($q, $limit) {
 		$params['terms.prefix'] = $q;
 		$params['terms.lower.incl'] = 'false';
 		$params['terms.limit'] = $limit;
-		$params['qt'] = '/terms';
+		$params['qt'] = 'suggest';
 
 		$response = $solr->search($q, 0, $limit, $params);
+
 		if ( ! $response->getHttpStatus() == 200 ) {
 			return;
 		}
 
 		$terms = get_object_vars($response->terms->spell);
-		foreach($terms as $term => $count) {
+    
+    $suggestionArray = current($response->spellcheck->suggestions);
+    
+    if($suggestionArray){
+      foreach($suggestionArray->suggestion as $suggestion){
+        printf("%s\n", $suggestion);
+      }
+    }
+    
+
+		/*foreach($terms as $term => $count) {
 			printf("%s\n", $term);
-		}
+		}*/
 	}
 }
 

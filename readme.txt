@@ -1,11 +1,11 @@
-=== Advanced Search by My Solr Server ===
-Contributors: www.mysolrserver.com
-Author URI: http://www.mysolrserver.com
+=== Search via Searchbox-Server ===
+Contributors: www.searchbox-server.com
+Author URI: http://www.searchbox-server.com
 Plugin URI: http://wordpress.org/extend/plugins/advanced-search-by-my-solr-server/
 Tags: solr, search, search results, search integration, custom search, better search, search replacement, category search, comment search, tag search, page search, post search, search highlight, seo
 Requires at least: 3.0.0
-Tested up to: 3.5.1
-Stable tag: 2.0.5
+Tested up to: 3.5.2
+Stable tag: 2.1.0
 
 
 A WordPress plugin that replaces the default WordPress search with a lot of benefits
@@ -13,12 +13,12 @@ A WordPress plugin that replaces the default WordPress search with a lot of bene
 
 == Description ==
 
-In order to make Advanced Search by My Solr Server plugin work, you need a Solr server installed and configured with the provided schema.xml file. 
+In order to make Search via Searchbox-Server plugin work, you need to either subscribe to searchbox-server.com or have a Solr server installed and configured with the provided schema.xml file. 
 
 
-= What Advanced Search by My Solr Server plugin does ? =
+= What Advanced Search via Searchbox-Server plugin does ? =
 
-Advanced Search by My Solr Server plugin replaces the default WordPress search. Features and benefits include:
+Search via Searchbox-Server plugin replaces the default WordPress search. Features and benefits include:
 
 *   Index pages, posts and custom post types
 *   Enable search and faceting on fields such as tags, categories, author, page type, custom fields and custom taxonomies
@@ -34,33 +34,33 @@ Advanced Search by My Solr Server plugin replaces the default WordPress search. 
 
 = Prerequisite = 
 
-A Solr server 3.6.0 or &gt; installed and configured with the provided schema.xml file. This file is configured for English content. Update this file according to your content language.
+A Solr server 3.6.0 or greater installed and configured with the provided schema.xml file. This file is configured for English content. Update this file according to your content language.
 
 In order to have spell checking work, in your solrconfig.xml file, check :
 
 1. the spellchecker component have to be correctly configured :
 
-    &lt;lst name="spellchecker"&gt;
-      &lt;str name="name">default&lt;/str&gt;
-      &lt;str name="field">spell&lt;/str&gt;
-      &lt;str name="spellcheckIndexDir"&gt;spellchecker&lt;/str&gt;
-      &lt;str name="buildOnOptimize"&gt;true&lt;/str&gt;
-    &lt;/lst&gt;
+    <lst name="spellchecker">
+      <str name="name">default&lt;/str>
+      <str name="field">spell&lt;/str>
+      <str name="spellcheckIndexDir"&gt;spellchecker&lt;/str>
+      <str name="buildOnOptimize"&gt;true&lt;/str>
+    </lst>
    
 2. the request handler includes the spellchecker component
 
-     &lt;arr name="last-components"&gt;
-       &lt;str&gt;spellcheck&lt;/str&gt;
-     &lt;/arr&gt;  
+     <arr name="last-components">
+       <str>spellcheck</str>
+     </arr>
     
-If you are using "Solr for Wordpress" Wordpress plugin, deactivate and uninstall it.
+If you are using "Solr for Wordpress" or "Advanced Search by My-Solr-Server" Wordpress plugin, deactivate and uninstall them.
 
 
 = Installation =
 
-1. Upload the `advanced-search-by-my-solr-server` folder to the `/wp-content/plugins/` directory
+1. Upload the `searchbox-server-search` folder to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Go in Advanced Search by My Solr Server settings page ("Advanced Search by My Solr Server"), configure the plugin and Load your blog content in Solr ("Load Content" button)
+3. Go in Advanced Search by My Solr Server settings page ("Search via Searchbox-Server"), configure the plugin and Load your blog content in Solr ("Load Content" button)
 
 = Customize the plugin display =
 
@@ -83,14 +83,6 @@ Advanced Search by My Solr Server plugin was tested with:
 * "Custom Post Type UI" plugin for Custom Post type and custom taxonomies management 
 * "Custom Field Template" plugin for custom fields management
 * WP-Types plugin for Custom Post type and custom taxonomies management and for custom fields management
-
-== Screenshots ==
-
-1. Configuration page
-
-
-2. Configuration page (facets)
-
 
 == Changelog ==
 

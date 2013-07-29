@@ -1,11 +1,11 @@
 <?php
 /*
- Plugin Name: Advanced Search by www.mysolrserver.com
+Plugin Name: Search via Searchbox-Server
 Plugin URI: http://wordpress.org/extend/plugins/advanced-search-by-my-solr-server/
 Description: Indexes, removes, and updates documents in the Solr search engine.
 Version: 2.0.5
-Author: www.mysolrserver.com
-Author URI: http://www.mysolrserver.com
+Author: www.searchbox-server.com
+Author URI: http://www.searchbox-server.com
 */
 /*
  Copyright (c) 2011-2013 www.mysolrserver.com
@@ -53,7 +53,7 @@ THE SOFTWARE.
 require_once("advanced-search-by-my-solr-server.inc.php");
 
 function mss_plugin_admin_menu() {
-	add_options_page('Advanced Search by My Solr Server', 'Advanced Search by My Solr Server', 'manage_options', 'MySolrServerSettings', 'mss_plugin_admin_settings');
+	add_options_page('Search via Searchbox-Server', 'Search via Searchbox-Server', 'manage_options', 'MySolrServerSettings', 'mss_plugin_admin_settings');
 }
 
 function mss_plugin_admin_settings() {
@@ -399,7 +399,7 @@ function mss_admin_head() {
         });
 
        	$('[name=mss_btn_ping]').click(function() {
-
+        
        		$('#mss_ping_status').html('&nbsp;<img src="<?php print $this_plugin_dir_url; ?>images/ajax-circle.gif">');
      	    $.get(ajax_url, {action: 'ping'}, 
            		function(data) {
@@ -544,9 +544,10 @@ function mss_template_redirect() {
 	// not a search page; don't do anything and return
 	// thanks to the Better Search plugin for the idea:  http://wordpress.org/extend/plugins/better-search/
 	$search = stripos($_SERVER['REQUEST_URI'], '?s=');
-	$autocomplete = stripos($_SERVER['REQUEST_URI'], '?method=autocomplete');
+  
+	$autocomplete = isset($_GET["method"]) && $_GET["method"] == "autocomplete";
 
-	if ( ($search || $autocomplete) == FALSE ) {
+	if (!$search && !$autocomplete) {
 		return;
 	}
 
@@ -554,6 +555,7 @@ function mss_template_redirect() {
 		$q = stripslashes($_GET['q']);
 		$limit = (isset($_GET['limit'])) ? $_GET['limit'] : 10;
 		mss_autocomplete($q, $limit);
+    die();
 		exit;
 	}
 
@@ -748,11 +750,13 @@ function mss_search_results() {
 			$response = $results->response;
 			//echo $results->getRawResponse();
 			$header = $results->responseHeader;
-			$teasers = get_object_vars($results->highlighting);
-			if (is_object($results->spellcheck))
-			$didyoumean = $results->spellcheck->suggestions->collation;
-			else
-			$didyoumean= false;
+      $teasers = get_object_vars($results->highlighting);
+      
+			if (is_object($results->spellcheck)){
+        $didyoumean = $results->spellcheck->suggestions->collation;
+      } else{
+   			$didyoumean= false;
+      }
 
 			$out['hits'] = sprintf(__("%d"), $response->numFound);
 			$out['qtime'] = false;
@@ -871,6 +875,11 @@ function mss_search_results() {
 					$resultinfo['score'] = $doc->score;
 					$resultinfo['id'] = $docid;
 					$docteaser = $teasers[$docid];
+          
+          if($docteaser->title){
+            $resultinfo['title'] = sprintf(__("%s"), implode("...", $docteaser->title));
+          }
+          
 					if ($docteaser->content) {
 						$resultinfo['teaser'] = sprintf(__("...%s..."), implode("...", $docteaser->content));
 					} else {
