@@ -86,6 +86,11 @@ Advanced Search by My Solr Server plugin was tested with:
 
 == Changelog ==
 
+= 2.0.6 =
+
+ * Removing shortcodes from indexed data
+ * Replacing query parser dismax with edismax
+
 = 2.0.5 =
 
 * update schema.xml for Solr 3.6.x
@@ -95,41 +100,3 @@ Advanced Search by My Solr Server plugin was tested with:
 = 2.0.4 =
 
 * Search result display bug fix
-
-= 2.0.3 =
-
-* Bug fix jQuery conflict
-* Tests with WP-Types plugin
-* Include custom fields and custom taxonomies in searched data 
-* SolrPhpClient upgrade
-* Add proxy support
-
-= 2.0.2 =
-
-* Bug fix while checking Solr connection
-
-= 2.0.1 =
-
-* Update installation prerequisites in order to have spell checking work.
-
-= 2.0.0 =
-
-* Includes all indexing and searching features
-* "Solr for Wordpress" plugin is not a pre-requisite anymore
-* Add support for custom post types and custom taxonomies
-* Settings page refactoring
-* Bug fixing
-
-= 1.0.2 =
-
-* Bug fixing
-
-= 1.0.1 =
-
-* Bug fixing
-
-= 1.0.0 =
-
-* Initial version just for My Solr Server connection management.
-* "Solr for Wordpress" plugin is a pre-requisite
-
