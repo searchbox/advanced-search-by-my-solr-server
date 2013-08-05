@@ -86,12 +86,12 @@ Advanced Search by My Solr Server plugin was tested with:
 
 == Changelog ==
 
-= 2.0.6 =
+= 2.1.1 =
 
  * Removing shortcodes from indexed data
  * Replacing query parser dismax with edismax
 
-= 2.0.5 =
+= 2.1.0 =
 
 * update schema.xml for Solr 3.6.x
 * add schema.xml for Solr 4.0.x
