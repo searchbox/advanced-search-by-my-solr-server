@@ -341,7 +341,7 @@ function mss_query( $qry, $offset, $count, $fq, $sortby, $options) {
 		}
 
 		$params = array();
-		$params['defType'] = 'dismax';
+		$params['defType'] = 'edismax';
 		$params['qf'] = 'tagssrch^5 title^10 categoriessrch^5 content^3.5 comments^1.5'; // TODO : Add "_srch" custom fields ?
 		/*
 		2.0.3 change:
