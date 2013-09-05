@@ -5,7 +5,7 @@ Plugin URI: http://wordpress.org/extend/plugins/advanced-search-by-my-solr-serve
 Tags: solr, search, search results, search integration, custom search, better search, search replacement, category search, comment search, tag search, page search, post search, search highlight, seo
 Requires at least: 3.0.0
 Tested up to: 3.5.2
-Stable tag: 2.1.1
+Stable tag: 2.1.2
 
 
 A WordPress plugin that replaces the default WordPress search with a lot of benefits
@@ -86,7 +86,7 @@ Advanced Search by My Solr Server plugin was tested with:
 
 == Changelog ==
 
-= 2.1.1 =
+= 2.1.2 =
 
 * Removing shortcodes from indexed data
 * Overall clean of the code
