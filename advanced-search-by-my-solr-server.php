@@ -8,7 +8,7 @@ Author: www.searchbox-server.com
 Author URI: http://www.searchbox-server.com
 */
 /*
- Copyright (c) 2011-2013 www.mysolrserver.com
+ Copyright (c) 2011-2013 www.searchboxserver.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -53,7 +53,7 @@ THE SOFTWARE.
 require_once("advanced-search-by-my-solr-server.inc.php");
 
 function mss_plugin_admin_menu() {
-	add_options_page('Search via Searchbox-Server', 'Search via Searchbox-Server', 'manage_options', 'MySolrServerSettings', 'mss_plugin_admin_settings');
+	add_options_page('Search via Searchbox-Server', 'Search via Searchbox-Server', 'manage_options', 'SearchboxServerSettings', 'mss_plugin_admin_settings');
 }
 
 function mss_plugin_admin_settings() {
@@ -85,19 +85,19 @@ function mss_admin_head() {
         jQuery(id).html('');
 	}
 
-	var ajax_url = 'options-general.php?page=MySolrServerSettings';
+	var ajax_url = 'options-general.php?page=SearchboxServerSettings';
 
     var $j = jQuery.noConflict();
     
     function mss_switch1() {
         if ($j('#selfhosted').is(':checked')) {
-            $j('#solr_admin_tab_mysolrserver').css('display', 'none');
+            $j('#solr_admin_tab_searchboxserver').css('display', 'none');
             $j('#mss_solr_host').removeAttr('disabled');
             $j('#mss_solr_port').removeAttr('disabled');
             $j('#mss_solr_path').removeAttr('disabled');
         }
-        if ($j('#mysolrserver').is(':checked')) {
-            $j('#solr_admin_tab_mysolrserver').css('display', 'block');
+        if ($j('#searchboxserver').is(':checked')) {
+            $j('#solr_admin_tab_searchboxserver').css('display', 'block');
             $j('#mss_solr_host').attr('disabled','disabled');
             $j('#mss_solr_port').attr('disabled','disabled');
             $j('#mss_solr_path').attr('disabled','disabled');
@@ -973,7 +973,7 @@ function mss_options_init() {
 	$action = strtolower(POSTGET("action"));
 
 	if ($action=="accountgetinfo") {
-		Global $url_mysolrserver, $url_extraparam;
+		Global $url_searchboxserver, $url_extraparam;
 		$name = POSTGET("name");
 		$passwd = POSTGET("passwd");
 
@@ -982,7 +982,7 @@ function mss_options_init() {
 		$proxyusername=POSTGET("proxyusername");
 		$proxypassword=POSTGET("proxypassword");
 		
-		print ($account_info_json = getMssAccountInfo($url_mysolrserver, $url_extraparam, $name, $passwd, $proxy, $proxyport, $proxyusername, $proxypassword));
+		print ($account_info_json = getMssAccountInfo($url_searchboxserver, $url_extraparam, $name, $passwd, $proxy, $proxyport, $proxyusername, $proxypassword));
 		exit();
 	}
 
@@ -1004,7 +1004,7 @@ function mss_options_init() {
 			$options['mss_solr_path']=$u['path'];
 		}
 
-		$options['mss_connect_type'] = 'mysolrserver';
+		$options['mss_connect_type'] = 'searchboxserver';
 
 		mss_update_option($options);
 
@@ -1043,7 +1043,7 @@ function mss_options_init() {
  			$options['mss_solr_proxyusername']=$_POST['settings']['mss_solr_proxyusername'];
  			$options['mss_solr_proxypassword']=$_POST['settings']['mss_solr_proxypassword'];
 			
-			if ($_POST['settings']['mss_connect_type']=='mysolrserver') {
+			if ($_POST['settings']['mss_connect_type']=='searchboxserver') {
 
 				// update mss parameters
 				$u = parse_url($options['mss_url']);
@@ -1059,7 +1059,7 @@ function mss_options_init() {
 
 			// lets loop through our options already in database
 			foreach ($options as $option => $old_value ) {
-				if (!(($_POST['settings']['mss_connect_type']=='mysolrserver') && ($option == 'mss_solr_host' || $option == 'mss_solr_port' || $option == 'mss_solr_path'))) {
+				if (!(($_POST['settings']['mss_connect_type']=='searchboxserver') && ($option == 'mss_solr_host' || $option == 'mss_solr_port' || $option == 'mss_solr_path'))) {
 					if ($option == 'mss_index_all_sites' || $option == 'mss_solr_initialized') {
 						$value = trim($old_value);
 					} else {

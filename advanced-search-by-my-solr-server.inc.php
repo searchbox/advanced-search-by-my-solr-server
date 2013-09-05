@@ -1,6 +1,6 @@
 <?php
 /*
- Copyright (c) 2011-2013 www.mysolrserver.com
+ Copyright (c) 2011-2013 www.searchbox-server.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -24,16 +24,6 @@ require_once("lib/std.encryption.class.inc.php");
 require_once("SolrPhpClient/Apache/Solr/Service.php");
 require_once("solr.class.inc.php");
 
-$bDev = false;
-if ($bDev) {
-	$url_mysolrserver = 'http://localhost/';
-	$url_extraparam = "&config=config-dev.ini";
-}
-else {
-	$url_mysolrserver = "http://manager.mysolrserver.com/";
-	$url_extraparam = "";
-}
-$url_mysolrserver .= '/mysolrserver_ws/manager.php';
 $this_plugin_dir_url = plugin_dir_url("") . 'searchbox-server-search/';
 
 
@@ -46,12 +36,12 @@ function mss_endswith($str, $sub) {
 
 function encrypt($value) {
 	$crypt = new encryption_class;
-	return $crypt->encrypt("mysolrserver", $value, strlen($value));
+	return $crypt->encrypt("searchboxserver", $value, strlen($value));
 }
 
 function decrypt($value) {
 	$crypt = new encryption_class;
-	return $crypt->decrypt("mysolrserver", $value);
+	return $crypt->decrypt("searchboxserver", $value);
 
 }
 
@@ -69,47 +59,6 @@ function POSTGET($param){
 	if (isset($_GET[$param]) && $_GET[$param]!="")
 	return $_GET[$param];
 	return "";
-}
-
-function getMssAccountInfo($url_mysolrserver, $url_extraparam, $mss_id, $mss_passwd, $proxy, $proxyport, $proxyusername, $proxypassword) {
-	$url = $url_mysolrserver . '?action=accountgetinfo&name=' . $mss_id . '&passwd=' . $mss_passwd . '&type=wp' . $url_extraparam;
-	log_message("getMssAccountInfo - url = " . $url_mysolrserver);
-
-	if ($proxy!='' && $proxyport!='') {
-
-		if ($proxyusername!='' && $proxypassword!='') {
-
-			// Encodage de l'autentification
-			$authProxy = base64_encode("$proxyusername:$proxypassword");
-			// Création des options de la requête
-			$opts = array(
-			'http' => array (
-			'method'=>'GET',
-			'proxy'=>"tcp://$proxy:$proxyport",
-			'request_fulluri' => true,
-			'header'=>"Proxy-Authorization: Basic $authProxy"
-			)
-			);
-		} else {
-				
-			// Création des options de la requête
-			$opts = array(
-			'http' => array (
-			'proxy'=>"tcp://$proxy:$proxyport",
-			'method'=>'GET',
-			'request_fulluri' => true
-			)
-			);
-		}
-		// Création du contexte de transaction
-		$ctx = stream_context_create($opts);
-		$json = file_get_contents($url,false,$ctx);
-
-	} else {
-		$json = file_get_contents($url);
-	}
-	log_message("getMssAccountInfo - json = " . $json);
-	return $json;
 }
 
 function log_message($message) {
@@ -215,7 +164,7 @@ function mss_build_document( $options, $post_info ) {
 			}
 		}
 
-    $doc->setField( 'title', strip_tags( $post_info->post_title ));
+		$doc->setField( 'title', strip_tags( $post_info->post_title ));
 		$doc->setField( 'content', strip_tags(preg_replace ("/\[(\S+)\]/e", "", $post_info->post_content)) );
 		$doc->setField( 'numcomments', $numcomments );
 		$doc->setField( 'author', $auth_info->display_name );
@@ -341,7 +290,7 @@ function mss_query( $qry, $offset, $count, $fq, $sortby, $options) {
 		}
 
 		$params = array();
-		$params['defType'] = 'edismax';
+		$params['defType'] = 'dismax';
 		$params['qf'] = 'tagssrch^5 title^10 categoriessrch^5 content^3.5 comments^1.5'; // TODO : Add "_srch" custom fields ?
 		/*
 		2.0.3 change:

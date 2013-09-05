@@ -1,6 +1,6 @@
 <?php
 /*  
-    Copyright (c) 2011-2013 www.mysolrserver.com
+    Copyright (c) 2011-2013 www.searchbox-server.com - formerly mysolrserver.com
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -78,7 +78,7 @@ $mss_proxyport = $options['mss_solr_proxyport'];
 $mss_proxyusername = $options['mss_solr_proxyusername'];
 $mss_proxypassword = decrypt($options['mss_solr_proxypassword']);
 
-global $url_mysolrserver;
+global $url_searchboxserver;
 global $url_extraparam ;
 
 $connected = false;
