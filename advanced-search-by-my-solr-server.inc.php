@@ -165,7 +165,7 @@ function mss_build_document( $options, $post_info ) {
 		}
 
 		$doc->setField( 'title', strip_tags( $post_info->post_title ));
-		$doc->setField( 'content', strip_tags(preg_replace ("/\[(\S+)\]/e", "", $post_info->post_content)) );
+		$doc->setField( 'content', strip_tags(preg_replace ("|\[(.+?)\](.+?\[/\\1\])?|s", "", $post_info->post_content)) );
 		$doc->setField( 'numcomments', $numcomments );
 		$doc->setField( 'author', $auth_info->display_name );
 		$doc->setField( 'author_s', get_author_posts_url($auth_info->ID, $auth_info->user_nicename));
